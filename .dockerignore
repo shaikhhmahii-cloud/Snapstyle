@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.gemini/
+.git/
+.github/
+android/.gradle/
+android/app/build/
+android/build/
+*.log
+tests/test_images/
