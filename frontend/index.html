@@ -252,10 +252,10 @@
           <h3 class="font-headline text-2xl text-primary mb-2">Drag & Drop</h3>
           <p class="font-body text-sm text-on-surface-variant mb-8">or tap to browse your gallery</p>
           <div class="flex flex-col sm:flex-row gap-3 w-full justify-center">
-            <button id="btn-browse-gallery" class="bg-primary text-on-primary font-label text-xs uppercase tracking-wider px-8 py-4 rounded-full hover:opacity-90 transition-opacity font-semibold">
+            <button id="btn-browse-gallery" onclick="document.getElementById('file-input')?.click();" class="bg-primary text-on-primary font-label text-xs uppercase tracking-wider px-8 py-4 rounded-full hover:opacity-90 transition-opacity font-semibold">
               Browse Gallery
             </button>
-            <button id="btn-use-demo-upload" class="bg-secondary-container text-on-secondary-container font-label text-xs uppercase tracking-wider px-8 py-4 rounded-full hover:bg-secondary-container/80 transition-colors font-semibold border border-secondary-fixed/20">
+            <button id="btn-use-demo-upload" onclick="if(window.snapstyleUseDemo){window.snapstyleUseDemo();}else if(window.snapstyleSetView){window.snapstyleSetView('analysis');}" class="bg-secondary-container text-on-secondary-container font-label text-xs uppercase tracking-wider px-8 py-4 rounded-full hover:bg-secondary-container/80 transition-colors font-semibold border border-secondary-fixed/20">
               Use Demo Image
             </button>
           </div>
@@ -272,7 +272,7 @@
           <div class="focus-bracket bracket-bl"></div>
           <div class="focus-bracket bracket-br"></div>
         </div>
-        <button id="btn-analyze-look" class="w-full bg-primary text-on-primary font-label text-sm uppercase tracking-wider px-8 py-5 rounded-full hover:opacity-90 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-3 shadow-[0_4px_24px_rgba(232,179,255,0.25)] font-semibold">
+        <button id="btn-analyze-look" onclick="if(window.snapstyleStartAnalysis){window.snapstyleStartAnalysis();}else if(window.snapstyleSetView){window.snapstyleSetView('analysis');}" class="w-full bg-primary text-on-primary font-label text-sm uppercase tracking-wider px-8 py-5 rounded-full hover:opacity-90 hover:scale-[1.02] transition-all duration-300 flex items-center justify-center gap-3 shadow-[0_4px_24px_rgba(232,179,255,0.25)] font-semibold">
           <span class="material-symbols-outlined text-xl">auto_awesome</span>
           <span>Analyze My Look</span>
         </button>
@@ -338,7 +338,7 @@
               <div id="analysis-detected-chips" class="flex flex-wrap gap-2 mb-8">
                 <!-- Chips populated by JS -->
               </div>
-              <button id="btn-view-matches" class="w-full py-4 bg-primary text-on-primary font-label text-sm uppercase tracking-widest rounded-xl hover:opacity-90 transition-all font-semibold shadow-lg hover:scale-[1.01]">
+              <button id="btn-view-matches" onclick="if(window.snapstyleSetView){window.snapstyleSetView('detected');}else{state.setView('detected');}" class="w-full py-4 bg-primary text-on-primary font-label text-sm uppercase tracking-widest rounded-xl hover:opacity-90 transition-all font-semibold shadow-lg hover:scale-[1.01]">
                 View Matches
               </button>
             </div>
@@ -391,7 +391,7 @@
             <!-- Cards populated dynamically by JS -->
           </div>
           <div class="mt-10 pt-6 border-t border-surface-container-highest">
-            <button id="btn-detected-proceed" class="w-full bg-primary text-on-primary font-label text-sm uppercase tracking-wider py-5 rounded-full hover:opacity-90 transition-all flex items-center justify-center gap-3 shadow-[0_8px_30px_rgba(232,179,255,0.25)] font-semibold hover:scale-[1.01]">
+            <button id="btn-detected-proceed" onclick="if(window.snapstyleSetView){window.snapstyleSetView('results');}else{state.setView('results');}" class="w-full bg-primary text-on-primary font-label text-sm uppercase tracking-wider py-5 rounded-full hover:opacity-90 transition-all flex items-center justify-center gap-3 shadow-[0_8px_30px_rgba(232,179,255,0.25)] font-semibold hover:scale-[1.01]">
               <span>Find Similar Products</span>
               <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
             </button>
@@ -720,14 +720,14 @@
     Notification
   </div>
 
-  <!-- Main JavaScript App Entry (Cache-busted v5.0) -->
-  <script type="module" src="js/app.js?v=5.0"></script>
+  <!-- Main JavaScript App Entry (Cache-busted v6.0) -->
+  <script type="module" src="js/app.js?v=6.0"></script>
 
   <!-- PWA Service Worker Registration -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/static/service-worker.js?v=5.0')
+        navigator.serviceWorker.register('/static/service-worker.js?v=6.0')
           .then(reg => {
             console.log('[SnapStyle] Service Worker active:', reg.scope);
             reg.update();

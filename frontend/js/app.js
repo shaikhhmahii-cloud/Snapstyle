@@ -1,5 +1,8 @@
-import { api } from "./api.js?v=5.0";
-import { state, DEMO_IMAGE_URL } from "./state.js?v=5.0";
+import { api } from "./api.js?v=6.0";
+import { state, DEMO_IMAGE_URL } from "./state.js?v=6.0";
+
+// Module-level upload tracking promise
+let pendingImageUploadPromise = null;
 
 // Comprehensive catalog map of individual demo product URLs (each product has its own unique destination)
 export const DEMO_PRODUCT_URLS = {
@@ -211,7 +214,10 @@ function initApp() {
     state.setView(viewName);
   };
   window.snapstyleUseDemo = function() {
-    useDemoOutfit();
+    useDemoOutfit(true);
+  };
+  window.snapstyleStartAnalysis = function() {
+    startAiAnalysis();
   };
   window.state = state;
 
@@ -350,7 +356,7 @@ function setupHomeView() {
   if (btnDemo) {
     const triggerDemo = (e) => {
       if (e) e.preventDefault();
-      useDemoOutfit();
+      useDemoOutfit(true);
     };
     btnDemo.addEventListener("click", triggerDemo);
     btnDemo.addEventListener("touchend", triggerDemo);
@@ -368,7 +374,15 @@ function setupUploadView() {
   const uploadState2 = document.getElementById("upload-state-preview");
   const previewImg = document.getElementById("upload-preview-img");
 
-  if (btnBrowse && fileInput) btnBrowse.addEventListener("click", () => fileInput.click());
+  const openPicker = (e) => {
+    if (e) e.preventDefault();
+    if (fileInput) fileInput.click();
+  };
+
+  if (btnBrowse) {
+    btnBrowse.addEventListener("click", openPicker);
+    btnBrowse.addEventListener("touchend", openPicker);
+  }
 
   if (fileInput) {
     fileInput.addEventListener("change", async (e) => {
@@ -389,19 +403,37 @@ function setupUploadView() {
     });
   }
 
-  if (btnUseDemo) btnUseDemo.addEventListener("click", () => useDemoOutfit(false));
+  if (btnUseDemo) {
+    const triggerDemo = (e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      useDemoOutfit(true);
+    };
+    btnUseDemo.addEventListener("click", triggerDemo);
+    btnUseDemo.addEventListener("touchend", triggerDemo);
+  }
 
   if (btnReset) {
-    btnReset.addEventListener("click", () => {
+    const triggerReset = (e) => {
+      if (e) e.preventDefault();
       uploadState2.classList.add("hidden");
       uploadState1.classList.remove("hidden");
       state.setImage(null, null);
-    });
+    };
+    btnReset.addEventListener("click", triggerReset);
+    btnReset.addEventListener("touchend", triggerReset);
   }
 
-  if (btnAnalyze) btnAnalyze.addEventListener("click", () => startAiAnalysis());
-
-let pendingImageUploadPromise = null;
+  if (btnAnalyze) {
+    const triggerAnalyze = (e) => {
+      if (e) e.preventDefault();
+      startAiAnalysis();
+    };
+    btnAnalyze.addEventListener("click", triggerAnalyze);
+    btnAnalyze.addEventListener("touchend", triggerAnalyze);
+  }
 
   async function handleFileSelected(file) {
     const localUrl = URL.createObjectURL(file);
@@ -439,7 +471,14 @@ function useDemoOutfit(triggerImmediateAnalysis = false) {
 
 function setupAnalysisView() {
   const btnViewMatches = document.getElementById("btn-view-matches");
-  if (btnViewMatches) btnViewMatches.addEventListener("click", () => state.setView("detected"));
+  if (btnViewMatches) {
+    const triggerMatches = (e) => {
+      if (e) e.preventDefault();
+      state.setView("detected");
+    };
+    btnViewMatches.addEventListener("click", triggerMatches);
+    btnViewMatches.addEventListener("touchend", triggerMatches);
+  }
 }
 
 async function startAiAnalysis() {
@@ -590,14 +629,35 @@ function revealAnalysisResults(detectedItems) {
     finalResults.classList.remove("hidden");
     finalResults.classList.add("view-fade-in");
   }
+
+  // Automatic seamless transition after showing detected chips
+  setTimeout(() => {
+    if (state.currentView === "analysis") {
+      state.setView("detected");
+    }
+  }, 2200);
 }
 
 function setupDetectedView() {
   const btnProceed = document.getElementById("btn-detected-proceed");
-  if (btnProceed) btnProceed.addEventListener("click", () => state.setView("results"));
+  if (btnProceed) {
+    const triggerProceed = (e) => {
+      if (e) e.preventDefault();
+      state.setView("results");
+    };
+    btnProceed.addEventListener("click", triggerProceed);
+    btnProceed.addEventListener("touchend", triggerProceed);
+  }
 
   const btnUploadNew = document.getElementById("btn-detected-upload-new");
-  if (btnUploadNew) btnUploadNew.addEventListener("click", () => state.setView("upload"));
+  if (btnUploadNew) {
+    const triggerNew = (e) => {
+      if (e) e.preventDefault();
+      state.setView("upload");
+    };
+    btnUploadNew.addEventListener("click", triggerNew);
+    btnUploadNew.addEventListener("touchend", triggerNew);
+  }
 }
 
 function renderDetectedView() {

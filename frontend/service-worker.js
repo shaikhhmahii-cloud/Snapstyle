@@ -4,7 +4,7 @@
  * with graceful offline caching fallback.
  */
 
-const CACHE_NAME = "snapstyle-cache-v5";
+const CACHE_NAME = "snapstyle-cache-v6";
 const STATIC_ASSETS = [
   "/app",
   "/static/index.html",
