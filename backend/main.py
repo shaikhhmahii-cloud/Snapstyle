@@ -95,6 +95,21 @@ def serve_sw():
         return FileResponse(sw_path, media_type="application/javascript")
     raise HTTPException(status_code=404, detail="Service worker not found")
 
+@app.get("/download/apk")
+@app.get("/SnapStyle.apk")
+def download_apk():
+    """Serves the compiled SnapStyle Android APK for direct mobile installation."""
+    apk_path = os.path.join(os.path.dirname(BASE_DIR), "SnapStyle.apk")
+    if os.path.exists(apk_path):
+        return FileResponse(
+            apk_path,
+            media_type="application/vnd.android.package-archive",
+            filename="SnapStyle.apk"
+        )
+    return RedirectResponse(
+        url="https://github.com/shaikhhmahii-cloud/Snapstyle/releases/download/v1.0.0/SnapStyle.apk"
+    )
+
 # Mount frontend directory for easy full-stack unified serving
 if os.path.exists(FRONTEND_DIR):
     app.mount("/static", StaticFiles(directory=FRONTEND_DIR, html=True), name="static")
