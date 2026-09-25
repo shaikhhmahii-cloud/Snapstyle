@@ -203,19 +203,18 @@ export function updateAllInspirationImages() {
   });
 }
 
-const views = {
-  welcome: document.getElementById("view-welcome"),
-  home: document.getElementById("view-home"),
-  upload: document.getElementById("view-upload"),
-  analysis: document.getElementById("view-analysis"),
-  detected: document.getElementById("view-detected"),
-  results: document.getElementById("view-results"),
-  recreate: document.getElementById("view-recreate"),
-  wishlist: document.getElementById("view-wishlist"),
-  profile: document.getElementById("view-profile")
-};
+const VIEW_IDS = ["welcome", "home", "upload", "analysis", "detected", "results", "recreate", "wishlist", "profile"];
 
 function initApp() {
+  // Expose global navigation helpers for robust mobile and inline event handling
+  window.snapstyleSetView = function(viewName) {
+    state.setView(viewName);
+  };
+  window.snapstyleUseDemo = function() {
+    useDemoOutfit();
+  };
+  window.state = state;
+
   setupNavigation();
   setupWelcomeView();
   setupHomeView();
@@ -250,8 +249,8 @@ function initApp() {
 }
 
 function renderCurrentView() {
-  Object.keys(views).forEach(vKey => {
-    const el = views[vKey];
+  VIEW_IDS.forEach(vKey => {
+    const el = document.getElementById("view-" + vKey);
     if (el) {
       if (vKey === state.currentView) {
         el.classList.remove("hidden");
@@ -327,16 +326,35 @@ function setupNavigation() {
 function setupWelcomeView() {
   const btnStart = document.getElementById("btn-welcome-start");
   if (btnStart) {
-    btnStart.addEventListener("click", () => state.setView("home"));
+    const triggerStart = (e) => {
+      if (e) e.preventDefault();
+      state.setView("home");
+    };
+    btnStart.addEventListener("click", triggerStart);
+    btnStart.addEventListener("touchend", triggerStart);
   }
 }
 
 function setupHomeView() {
   const btnUpload = document.getElementById("btn-home-upload");
-  if (btnUpload) btnUpload.addEventListener("click", () => state.setView("upload"));
+  if (btnUpload) {
+    const triggerUpload = (e) => {
+      if (e) e.preventDefault();
+      state.setView("upload");
+    };
+    btnUpload.addEventListener("click", triggerUpload);
+    btnUpload.addEventListener("touchend", triggerUpload);
+  }
 
   const btnDemo = document.getElementById("btn-home-demo");
-  if (btnDemo) btnDemo.addEventListener("click", () => useDemoOutfit());
+  if (btnDemo) {
+    const triggerDemo = (e) => {
+      if (e) e.preventDefault();
+      useDemoOutfit();
+    };
+    btnDemo.addEventListener("click", triggerDemo);
+    btnDemo.addEventListener("touchend", triggerDemo);
+  }
 }
 
 function setupUploadView() {
@@ -1231,4 +1249,8 @@ async function loadInitialData() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", initApp);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}

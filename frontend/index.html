@@ -130,7 +130,7 @@
         <p class="font-body text-lg md:text-xl text-on-surface-variant max-w-md mb-12 font-light">
           Snap your inspiration. Find your style.
         </p>
-        <button id="btn-welcome-start" class="w-full md:w-auto md:min-w-[320px] bg-[#1A1A1A] text-on-primary font-label text-sm uppercase tracking-widest py-4 px-8 rounded-full shadow-[0_4px_24px_rgba(0,0,0,0.5)] hover:scale-[1.02] border border-primary/30 transition-all duration-300 flex items-center justify-center gap-3 group">
+        <button id="btn-welcome-start" data-nav-target="home" onclick="if(window.snapstyleSetView){window.snapstyleSetView('home');}else{document.getElementById('view-welcome').classList.add('hidden');document.getElementById('view-home').classList.remove('hidden');document.getElementById('main-header')?.classList.remove('hidden');document.getElementById('bottom-nav')?.classList.remove('hidden');}" class="w-full md:w-auto md:min-w-[320px] bg-[#1A1A1A] text-on-primary font-label text-sm uppercase tracking-widest py-4 px-8 rounded-full shadow-[0_4px_24px_rgba(0,0,0,0.5)] hover:scale-[1.02] border border-primary/30 transition-all duration-300 flex items-center justify-center gap-3 group cursor-pointer">
           <span>Get Started</span>
           <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
         </button>
@@ -151,11 +151,11 @@
             </p>
           </div>
           <div class="flex flex-col sm:flex-row gap-4 pt-2">
-            <button id="btn-home-upload" class="bg-primary text-on-primary font-label text-sm uppercase tracking-wider px-8 py-4 rounded-full flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_4px_20px_rgba(232,179,255,0.2)]">
+            <button id="btn-home-upload" data-nav-target="upload" onclick="if(window.snapstyleSetView){window.snapstyleSetView('upload');}" class="bg-primary text-on-primary font-label text-sm uppercase tracking-wider px-8 py-4 rounded-full flex items-center justify-center gap-2 hover:scale-[1.02] transition-transform shadow-[0_4px_20px_rgba(232,179,255,0.2)] cursor-pointer">
               <span class="material-symbols-outlined filled text-xl">photo_camera</span>
               <span>Upload Inspiration</span>
             </button>
-            <button id="btn-home-demo" class="bg-secondary-container text-on-secondary-container font-label text-sm uppercase tracking-wider px-8 py-4 rounded-full hover:bg-secondary-container/80 transition-colors flex items-center justify-center border border-secondary-fixed/20">
+            <button id="btn-home-demo" onclick="if(window.snapstyleUseDemo){window.snapstyleUseDemo();}" class="bg-secondary-container text-on-secondary-container font-label text-sm uppercase tracking-wider px-8 py-4 rounded-full hover:bg-secondary-container/80 transition-colors flex items-center justify-center border border-secondary-fixed/20 cursor-pointer">
               Try Demo
             </button>
           </div>
