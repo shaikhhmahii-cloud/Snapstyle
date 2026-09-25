@@ -186,7 +186,10 @@ public class MainActivity extends AppCompatActivity {
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         settings.setUserAgentString(settings.getUserAgentString() + " SnapStyleAndroid/1.0");
 
-        swipeRefreshLayout.setOnRefreshListener(() -> webView.reload());
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            webView.clearCache(true);
+            webView.reload();
+        });
 
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -245,17 +248,34 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                String url = request.getUrl().toString();
-                // External shopping and affiliate links open in native browser
-                if (!url.contains("localhost") && !url.contains("127.0.0.1") &&
-                    !url.contains("10.0.2.2") && !url.contains("192.168.") &&
-                    !url.contains("snapstyle")) {
-                    try {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        startActivity(intent);
-                        return true;
-                    } catch (Exception ignored) {}
+                Uri requestUri = request.getUrl();
+                String url = requestUri.toString();
+
+                SharedPreferences prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                String currentServerUrl = prefs.getString(KEY_SERVER_URL, DEFAULT_SERVER_URL);
+                String configuredHost = null;
+                try {
+                    configuredHost = Uri.parse(currentServerUrl).getHost();
+                } catch (Exception ignored) {}
+
+                String requestHost = requestUri.getHost();
+
+                // Keep app navigation and server requests inside the WebView
+                boolean isAppInternal = (configuredHost != null && configuredHost.equalsIgnoreCase(requestHost)) ||
+                        url.contains("localhost") || url.contains("127.0.0.1") ||
+                        url.contains("10.0.2.2") || url.contains("192.168.") ||
+                        url.contains("trycloudflare.com") || url.contains("snapstyle");
+
+                if (isAppInternal) {
+                    return false;
                 }
+
+                // External shopping (Zara, Myntra, etc.) opens in native browser
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, requestUri);
+                    startActivity(intent);
+                    return true;
+                } catch (Exception ignored) {}
                 return false;
             }
 

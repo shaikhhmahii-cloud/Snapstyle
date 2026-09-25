@@ -12,10 +12,12 @@ export const api = {
 
   async checkHealth() {
     try {
-      const res = await fetch(`${API_BASE}/`);
-      return await res.json();
+      const res = await fetch(`${API_BASE}/health`, { headers: { "Accept": "application/json" } });
+      if (res.ok) return await res.json();
+      const resRoot = await fetch(`${API_BASE}/`, { headers: { "Accept": "application/json" } });
+      return await resRoot.json();
     } catch (err) {
-      console.warn("[SnapStyle API] Backend not reachable at default port, using local demo fallback mode:", err);
+      console.warn("[SnapStyle API] Backend note:", err);
       return { status: "demo_mode" };
     }
   },

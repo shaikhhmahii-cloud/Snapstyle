@@ -60,6 +60,11 @@ app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")
 
 FRONTEND_DIR = os.path.join(os.path.dirname(BASE_DIR), "frontend")
 
+@app.get("/health")
+def health_endpoint():
+    """Health check endpoint confirming SnapStyle backend is up and running."""
+    return {"status": "ok", "app": "SnapStyle", "version": "1.0.0"}
+
 @app.get("/static/index.htmlsvg")
 @app.get("/index.htmlsvg")
 def redirect_errant_htmlsvg():

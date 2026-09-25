@@ -1,9 +1,10 @@
 /**
  * SnapStyle Service Worker
- * Enables offline caching, fast background asset loading, and mobile installability.
+ * Network-First strategy ensures mobile WebView and browsers always load fresh UI updates,
+ * with graceful offline caching fallback.
  */
 
-const CACHE_NAME = "snapstyle-cache-v1";
+const CACHE_NAME = "snapstyle-cache-v5";
 const STATIC_ASSETS = [
   "/app",
   "/static/index.html",
@@ -17,6 +18,7 @@ const STATIC_ASSETS = [
 ];
 
 self.addEventListener("install", (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       console.log("[SnapStyle SW] Pre-caching static app shell");
@@ -25,7 +27,6 @@ self.addEventListener("install", (event) => {
       });
     })
   );
-  self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
@@ -34,42 +35,47 @@ self.addEventListener("activate", (event) => {
       return Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
-            console.log("[SnapStyle SW] Removing old cache:", key);
+            console.log("[SnapStyle SW] Removing stale cache:", key);
             return caches.delete(key);
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
-  // Only cache GET requests; dynamic API calls (/analyze, /search-products) bypass cache for real AI results
-  if (event.request.method !== "GET" || event.request.url.includes("/analyze") || event.request.url.includes("/search-products")) {
+  // Only handle GET requests; AI and upload endpoints bypass cache
+  if (
+    event.request.method !== "GET" ||
+    event.request.url.includes("/analyze") ||
+    event.request.url.includes("/search-products") ||
+    event.request.url.includes("/upload") ||
+    event.request.url.includes("/health")
+  ) {
     return;
   }
 
+  // Network-First strategy: always fetch fresh from network
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).then((response) => {
-        if (!response || response.status !== 200 || response.type !== "basic") {
-          return response;
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseClone);
+          });
         }
-        const responseToCache = response.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
+        return networkResponse;
+      })
+      .catch(() => {
+        // Fallback to cache if network is unavailable
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) return cachedResponse;
+          if (event.request.mode === "navigate") {
+            return caches.match("/static/index.html") || caches.match("/app");
+          }
         });
-        return response;
-      }).catch(() => {
-        // Fallback for document navigation
-        if (event.request.mode === "navigate") {
-          return caches.match("/static/index.html");
-        }
-      });
-    })
+      })
   );
 });

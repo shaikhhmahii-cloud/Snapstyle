@@ -83,21 +83,21 @@
 <body class="bg-background text-on-background min-h-screen antialiased flex flex-col font-body selection:bg-primary selection:text-on-primary">
 
   <!-- Fixed Top Navigation Bar -->
-  <header id="main-header" class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 bg-surface/85 backdrop-blur-md border-b border-surface-container/50 hidden">
+  <header id="main-header" class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 bg-surface/85 backdrop-blur-md border-b border-surface-container/50">
     <div class="flex items-center gap-6">
       <button class="text-on-surface-variant hover:text-primary transition-colors p-1" aria-label="Menu">
         <span class="material-symbols-outlined text-[24px]">menu</span>
       </button>
       <nav class="hidden md:flex items-center gap-8">
-        <a href="#" data-nav-target="home" class="font-label text-sm uppercase tracking-wider text-primary font-bold transition-colors">Home</a>
-        <a href="#" data-nav-target="upload" class="font-label text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors">Find My Look</a>
-        <a href="#" data-nav-target="wishlist" class="font-label text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors">Wishlist</a>
-        <a href="#" data-nav-target="profile" class="font-label text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors">Profile</a>
+        <a href="#" data-nav-target="home" onclick="if(window.snapstyleSetView){window.snapstyleSetView('home');}return false;" class="font-label text-sm uppercase tracking-wider text-primary font-bold transition-colors">Home</a>
+        <a href="#" data-nav-target="upload" onclick="if(window.snapstyleSetView){window.snapstyleSetView('upload');}return false;" class="font-label text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors">Find My Look</a>
+        <a href="#" data-nav-target="wishlist" onclick="if(window.snapstyleSetView){window.snapstyleSetView('wishlist');}return false;" class="font-label text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors">Wishlist</a>
+        <a href="#" data-nav-target="profile" onclick="if(window.snapstyleSetView){window.snapstyleSetView('profile');}return false;" class="font-label text-sm uppercase tracking-wider text-on-surface-variant hover:text-primary transition-colors">Profile</a>
       </nav>
     </div>
     
     <!-- Centered Brand Logo -->
-    <div class="font-headline text-2xl font-bold tracking-tight text-primary md:absolute md:left-1/2 md:-translate-x-1/2 cursor-pointer" data-nav-target="home">
+    <div class="font-headline text-2xl font-bold tracking-tight text-primary md:absolute md:left-1/2 md:-translate-x-1/2 cursor-pointer" data-nav-target="home" onclick="if(window.snapstyleSetView){window.snapstyleSetView('home');}">
       SnapStyle
     </div>
 
@@ -111,8 +111,8 @@
   <!-- Main View Container -->
   <main class="flex-grow w-full">
 
-    <!-- 1. SPLASH / WELCOME SCREEN -->
-    <section id="view-welcome" class="relative h-screen w-full overflow-hidden flex flex-col justify-end">
+    <!-- 1. SPLASH / WELCOME SCREEN (Optional, hidden by default for immediate app entry) -->
+    <section id="view-welcome" class="hidden relative h-screen w-full overflow-hidden flex flex-col justify-end">
       <!-- High fashion editorial background with gradient overlay -->
       <div class="absolute inset-0 z-0 w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCa4GPx1tMEVoST59XdG8KVNp2mkxFdc4yTYjeKUxGpNjcv3JvNMHqS7HFFx37Aal8x_tedj02y7PB9KyzMn6UG2AkF7p-nlVprvtN1OVETIXayfZHVOIrjMCKyrecQCojP3ZGwmczAjmKdsmYLR6YN3WrdUEv2HGrUKna7bsfOUx7GpqViB_dM9rfQ6P0jW9wAk_KRRWekRT42_0NLLnPDS4fwK7I0CGBAFxYSge0MAPistOaGdDGkOA');">
         <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/75 to-surface/30"></div>
@@ -137,8 +137,8 @@
       </div>
     </section>
 
-    <!-- 2. HOME SCREEN -->
-    <section id="view-home" class="hidden pt-24 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+    <!-- 2. HOME SCREEN (Primary entry view) -->
+    <section id="view-home" class="pt-24 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center min-h-[calc(100vh-140px)]">
         <!-- Hero Left Column -->
         <div class="md:col-span-6 flex flex-col justify-center space-y-8 z-10">
@@ -692,24 +692,24 @@
   </div>
 
   <!-- Mobile Bottom Navigation Bar -->
-  <nav id="bottom-nav" class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-5 pt-2.5 bg-surface/90 backdrop-blur-lg rounded-t-2xl border-t border-surface-container-highest shadow-2xl hidden">
-    <a href="#" data-nav-target="home" class="flex flex-col items-center justify-center text-primary font-bold transition-all">
+  <nav id="bottom-nav" class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-5 pt-2.5 bg-surface/90 backdrop-blur-lg rounded-t-2xl border-t border-surface-container-highest shadow-2xl">
+    <a href="#" data-nav-target="home" onclick="if(window.snapstyleSetView){window.snapstyleSetView('home');}return false;" class="flex flex-col items-center justify-center text-primary font-bold transition-all">
       <span class="material-symbols-outlined filled text-[24px] mb-0.5">home</span>
       <span class="font-label text-[10px] uppercase tracking-wider">Home</span>
     </a>
-    <a href="#" data-nav-target="results" class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-all">
+    <a href="#" data-nav-target="results" onclick="if(window.snapstyleSetView){window.snapstyleSetView('results');}return false;" class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-all">
       <span class="material-symbols-outlined text-[24px] mb-0.5">search</span>
       <span class="font-label text-[10px] uppercase tracking-wider">Find</span>
     </a>
-    <a href="#" data-nav-target="upload" class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-all">
+    <a href="#" data-nav-target="upload" onclick="if(window.snapstyleSetView){window.snapstyleSetView('upload');}return false;" class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-all">
       <span class="material-symbols-outlined text-[24px] mb-0.5">add_a_photo</span>
       <span class="font-label text-[10px] uppercase tracking-wider">Upload</span>
     </a>
-    <a href="#" data-nav-target="wishlist" class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-all">
+    <a href="#" data-nav-target="wishlist" onclick="if(window.snapstyleSetView){window.snapstyleSetView('wishlist');}return false;" class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-all">
       <span class="material-symbols-outlined text-[24px] mb-0.5">favorite</span>
       <span class="font-label text-[10px] uppercase tracking-wider">Wishlist</span>
     </a>
-    <a href="#" data-nav-target="profile" class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-all">
+    <a href="#" data-nav-target="profile" onclick="if(window.snapstyleSetView){window.snapstyleSetView('profile');}return false;" class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-all">
       <span class="material-symbols-outlined text-[24px] mb-0.5">person</span>
       <span class="font-label text-[10px] uppercase tracking-wider">Profile</span>
     </a>
@@ -720,15 +720,18 @@
     Notification
   </div>
 
-  <!-- Main JavaScript App Entry -->
-  <script type="module" src="js/app.js"></script>
+  <!-- Main JavaScript App Entry (Cache-busted v5.0) -->
+  <script type="module" src="js/app.js?v=5.0"></script>
 
   <!-- PWA Service Worker Registration -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/static/service-worker.js')
-          .then(reg => console.log('[SnapStyle] Service Worker registered:', reg.scope))
+        navigator.serviceWorker.register('/static/service-worker.js?v=5.0')
+          .then(reg => {
+            console.log('[SnapStyle] Service Worker active:', reg.scope);
+            reg.update();
+          })
           .catch(err => console.log('[SnapStyle] Service Worker registration note:', err));
       });
     }

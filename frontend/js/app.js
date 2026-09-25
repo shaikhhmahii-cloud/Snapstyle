@@ -1,5 +1,5 @@
-import { api } from "./api.js";
-import { state, DEMO_IMAGE_URL } from "./state.js";
+import { api } from "./api.js?v=5.0";
+import { state, DEMO_IMAGE_URL } from "./state.js?v=5.0";
 
 // Comprehensive catalog map of individual demo product URLs (each product has its own unique destination)
 export const DEMO_PRODUCT_URLS = {

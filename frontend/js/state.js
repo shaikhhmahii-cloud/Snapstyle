@@ -7,7 +7,7 @@
 export const DEMO_IMAGE_URL = "https://lh3.googleusercontent.com/aida-public/AB6AXuDCmSvJyei4rSSZaQgy5nYnFr_nQVtIB6V6XjWb_G2o7NLlsA_WnACLsRdi6WouU3IUhHhtoxrwywGd7AGW5y0hNMSJvMvWChtYnPxBT82PxMM3OuiUuJsqwDSHp8BKQ1naLtZQa6UEW1Z4h8VolyaRtnzZak0B2CZHOIPCavj7jYZ8jt1TrTWsuKGmZ9p1WcxcizqhZejupWWAdRXvQCXPjQr6EcL6BqpANgkyYD-DOptTjrCaMNLr1Q";
 
 export const state = {
-  currentView: "welcome", // welcome | home | upload | analysis | detected | results | recreate | wishlist | profile
+  currentView: "home", // home | upload | analysis | detected | results | recreate | wishlist | profile | welcome
   activeNav: "home",
   
   // Upload and AI state
